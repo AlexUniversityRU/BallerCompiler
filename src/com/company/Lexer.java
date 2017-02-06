@@ -16,7 +16,7 @@ public class Lexer {
     public Token nextToken(String input){
         String lexeme = input;
         TokenCode tokenCode = TokenCode.ERROR; // Error if not found
-
+        //
         int index = 0;
         int count = -1;
 
