@@ -16,13 +16,12 @@ public class Lexer {
     public Token nextToken(String input){
         String lexeme = input;
         TokenCode tokenCode = TokenCode.ERROR; // Error if not found
-        //
         int index = 0;
         int count = -1;
 
         // Regex's
-        String rNumber = "(^[1-9]+[0-9]*)";
-        String rID = "\\w+";
+        String rNumber = "\\b(^[1-9]+[0-9]*)";
+        String rID = "\\d\\w+";
 
         // For rNumber, rID
         //  If the first index looks like a lexeme, check all further indexes
@@ -30,39 +29,55 @@ public class Lexer {
         //  fit within the regex
         // For Default
         //  Nothing found, send entire input back with ERROR
+        boolean FOUND = false;
         int loop = 0;
         do{
             loop++;
             switch(loop){
                 case 1:
-                    // Integers
-                    if (input.substring(index, index + 1).matches(rNumber)) {
-                        count = checkToken(input, 0, rNumber);
+                    // INT
+                    if(input.matches(rNumber)){
                         tokenCode = TokenCode.INT;
+                        FOUND = true;
                     }
                     break;
-                case 2:
+                case 3:
                     // Make sure words that could be taken as variables be found BEFORE the variable
                     // case is called.  Or don't allow variable to grab them in the regex somehow.
                     break;
-                case 3:
-                    // Variables
-                    if (input.substring(index, index + 1).matches(rID)) {
-                        count = checkToken(input, 0, rID);
+                case 2:
+                    // ID
+                    if(input.matches(rID)){
                         tokenCode = TokenCode.ID;
+                        FOUND = true;
                     }
                     break;
                 default:
+                    // ERROR
                     return new Token(lexeme, tokenCode);
             }
 
-            // If the count of the lexeme is the length of the input then the input is a lexeme,
-            // if not, the input is not a lexeme and ERROR should be called.
-        } while(index + count != input.length());
+        } while(!FOUND);
+        // /while(index + count != input.length());
 
-        System.out.print(tokenCode.toString()+ ", ");
+        //System.out.print(tokenCode.toString()+ ", ");
         return new Token(lexeme, tokenCode);
     }
+
+
+
+    /** OBSOLETE BELOW **/
+    // integer
+    /*if (input.substring(index, index + 1).matches(rNumber)) {
+        count = checkToken(input, 0, rNumber);
+        tokenCode = TokenCode.INT;
+     }*/
+    // variable
+     /*if (input.substring(index, index + 1).matches(rID)) {
+        count = checkToken(input, 0, rID);
+        tokenCode = TokenCode.ID;
+      }*/
+
 
     // Recursively checks how many characters long the token is
     // Makes sure each index follows the regex

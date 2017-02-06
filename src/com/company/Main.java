@@ -31,6 +31,9 @@ public class Main {
             }
         }
 
+        for(Token t : tokenQ) {
+            System.out.println("lexeme: " + t.lexeme + " tCode: " + t.tCode);
+        }
 
 
     }
