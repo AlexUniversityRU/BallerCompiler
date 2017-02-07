@@ -110,7 +110,7 @@ public class Lexer {
                     break;
                 default:
                     // ERROR
-                    tokenlist.add(0, new Token(lexeme, tokenCode));
+                    tokenlist.add(new Token(lexeme, tokenCode));
                     return tokenlist;
                     //return new Token(lexeme, tokenCode);
             }
@@ -118,10 +118,10 @@ public class Lexer {
         } while(!FOUND);
 
         if(SemiColonFound){
-            tokenlist.add(0, new Token(lexeme.substring(0, lexeme.length()-1), tokenCode));
-            tokenlist.add(1, new Token(";", tokenCode.SEMICOL));
+            tokenlist.add(new Token(lexeme.substring(0, lexeme.length()-1), tokenCode));
+            tokenlist.add(new Token(";", tokenCode.SEMICOL));
         } else {
-            tokenlist.add(0, new Token(lexeme, tokenCode));
+            tokenlist.add(new Token(lexeme, tokenCode));
         }
         return tokenlist;
     }
