@@ -27,7 +27,11 @@ public class Main {
         while ((s = in.readLine()) != null && s.length() != 0) {
             String[] splitted = s.split("\\s+");
             for (String part : splitted){
-                tokenQ.add(lexer.nextToken(part));
+                //tokenQ.add(lexer.nextToken(part));
+                ArrayList<Token> l = lexer.nextToken(part);
+                for(Token token : l){
+                    tokenQ.add(token);
+                }
             }
         }
 
