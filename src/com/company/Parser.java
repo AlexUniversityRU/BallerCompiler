@@ -1,16 +1,3 @@
-import com.sun.tools.internal.ws.wsdl.document.jaxws.Exception;
-import org.omg.IOP.ExceptionDetailMessage;
-
-import java.util.concurrent.ExecutionException;
-
-/**
- * Created by Owner on 05-Feb-17.
- * Statements → Statement ; Statements | end
- * Statement ⇒ id = Expr | print id
- * Expr → Term | Term + Expr | Term – Expr
- * Term ⇒ Factor | Factor * Term
- * Factor → int | id | ( Expr )
- */
 public class Parser {
 
     private Lexer lexer;
@@ -26,29 +13,29 @@ public class Parser {
     private void checkLexer(Lexer lex) {
 
         for (int i = 0; i < 18; i++) {
-            Token test = lex.nextToken();
+            Token test = lex.getNextToken();
             System.out.println("Lex: " + test.lexeme + " , Token: " + test.tCode);
         }
     }
 
     public void parse() {
-        System.out.println("parse()");
-        this.currToken = lexer.nextToken();
+        //System.out.println("parse()");
+        this.currToken = lexer.getNextToken();
         statements();
     }
 
     private void statements() {
         //System.out.println("Statements");
         if(currToken.tCode == Token.TokenCode.END) {
-            System.out.println("Statements -> end");
+            //System.out.println("Statements -> end");
             return;
         } else {
-            System.out.println("Statements -> Statement");
+            //System.out.println("Statements -> Statement");
             statement();
             if(currToken.tCode == Token.TokenCode.SEMICOL) {
-                System.out.println("Statements -> Statement ;");
-                currToken = lexer.nextToken();
-                System.out.println("Statements -> Statement ; Statements");
+                //System.out.println("Statements -> Statement ;");
+                currToken = lexer.getNextToken();
+                //System.out.println("Statements -> Statement ; Statements");
                 statements();
                 return;
             } else {
@@ -60,50 +47,65 @@ public class Parser {
     private void statement() {
         //System.out.println("Statement");
         if(currToken.tCode == Token.TokenCode.ID) {
-            System.out.println("Statement -> ID");
-            currToken = lexer.nextToken();
+            //System.out.println("Statement -> ID");
+            System.out.println("PUSH " + currToken.lexeme);
+            currToken = lexer.getNextToken();
+            // kajdlshfaæskldf System.out.println("PUSH ID");
             if(currToken.tCode == Token.TokenCode.ASSIGN) {
-                System.out.println("Statement -> ID = ");
-                currToken = lexer.nextToken();
-                System.out.println("Statement -> ID = Expr");
+                //System.out.println("Statement -> ID = ");
+                currToken = lexer.getNextToken();
+                //System.out.println("Statement -> ID = Expr");
                 expr();
+                System.out.println("ASSIGN");
                 return;
             }
         } else if (currToken.tCode == Token.TokenCode.PRINT) {
-            System.out.println("Statement -> print");
-            currToken = lexer.nextToken();
-            if (currToken.tCode == Token.TokenCode.ID);
-            System.out.println("Statement -> print ID");
-            currToken = lexer.nextToken();
-            return;
+            //System.out.println("Statement -> print");
+            currToken = lexer.getNextToken();
+            System.out.println("PUSH " + currToken.lexeme);
+            if (currToken.tCode == Token.TokenCode.ID) {
+                /// - dslkjf aælkdjf System.out.println("PUSH ID");
+                //System.out.println("Statement -> print ID");
+                currToken = lexer.getNextToken();
+                System.out.println("PRINT");
+                return;
+            }
+            error("statement");
         }
         error("statement");
     }
 
     private void expr() {
         //System.out.println("expr");
-        System.out.println("expr -> term");
+        //System.out.println("expr -> term");
         term();
-        if (currToken.tCode == Token.TokenCode.ADD || currToken.tCode == Token.TokenCode.SUB) {
-            System.out.println("expr -> term +/-");
-            currToken = lexer.nextToken();
-            System.out.println("expr -> term +/- expr");
+        if (currToken.tCode == Token.TokenCode.ADD) {
+            //System.out.println("expr -> term +");
+            currToken = lexer.getNextToken();
+            //System.out.println("expr -> term + expr");
             expr();
+            System.out.println("ADD");
             return;
-        } /*else {
-            error("expr");
-        }*/
+        } else if (currToken.tCode == Token.TokenCode.SUB) {
+            //System.out.println("expr -> term -");
+            currToken = lexer.getNextToken();
+            //System.out.println("expr -> term - expr");
+            expr();
+            System.out.println("SUB");
+            return;
+        }
     }
 
     private void term() {
         //System.out.println("term");
-        System.out.println("term -> factor");
+        //System.out.println("term -> factor");
         factor();
         if(currToken.tCode == Token.TokenCode.MULT) {
-            System.out.println("term -> factor *");
-            currToken = lexer.nextToken();
-            System.out.println("term -> factor * term");
+            //System.out.println("term -> factor *");
+            currToken = lexer.getNextToken();
+            //System.out.println("term -> factor * term");
             term();
+            System.out.println("MULT");
         }
         return;
 
@@ -112,17 +114,18 @@ public class Parser {
     private void factor() {
         //System.out.println("factor");
         if(currToken.tCode == Token.TokenCode.INT || currToken.tCode == Token.TokenCode.ID) {
-            System.out.println("factor -> INT/ID");
-            currToken = lexer.nextToken();
+            //System.out.println("factor -> INT/ID");
+            System.out.println("PUSH " + currToken.lexeme);
+            currToken = lexer.getNextToken();
             return;
         } else if ( currToken.tCode == Token.TokenCode.LPAREN) {
-            System.out.println("factor -> (");
-            currToken = lexer.nextToken();
-            System.out.println("factor -> ( expr");
+            //System.out.println("factor -> (");
+            currToken = lexer.getNextToken();
+            //System.out.println("factor -> ( expr");
             expr();
             if(currToken.tCode == Token.TokenCode.RPAREN) {
-                System.out.println("factor -> ( expr )");
-                currToken = lexer.nextToken();
+                //System.out.println("factor -> ( expr )");
+                currToken = lexer.getNextToken();
                 return;
             }
 

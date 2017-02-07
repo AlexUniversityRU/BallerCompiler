@@ -9,7 +9,7 @@ public class Token {
         this.lexeme = lexeme;
         this.tCode = tCode;
 
-        System.out.println("Lexeme: " + lexeme + " , Code: " + tCode);
+        //System.out.println("Lexeme: " + lexeme + " , Code: " + tCode);
     }
 
 }
