@@ -61,9 +61,9 @@ public class Lexer {
 
         if (subString.matches("[0-9]+")) {
             tokenCode = Token.TokenCode.INT;
-        } else if (subString.matches("(\bprint)")) {
+        } else if (subString.contentEquals("print")) {
             tokenCode = Token.TokenCode.PRINT;
-        } else if (subString.matches("(\bend)")) {
+        } else if (subString.contentEquals("end")) {
             tokenCode = Token.TokenCode.END;
         } else if (subString.matches("[A-Za-z]+")) {
             tokenCode = Token.TokenCode.ID;
@@ -105,36 +105,6 @@ public class Lexer {
         return temp;
 
     }
-
-    /** OBSOLETE BELOW **/
-
-    // integer
-    /*if (input.substring(index, index + 1).matches(rNumber)) {
-        count = checkToken(input, 0, rNumber);
-        tokenCode = TokenCode.INT;
-     }*/
-    // variable
-     /*if (input.substring(index, index + 1).matches(rID)) {
-        count = checkToken(input, 0, rID);
-        tokenCode = TokenCode.ID;
-      }
-
-    // /while(index + count != input.length());
-
-    // Recursively checks how many characters long the token is
-    // Makes sure each index follows the regex
-    private static int checkToken(String sub, int index, String regex){
-
-        if(sub.length() <= index) {
-            return 0;
-        }
-
-        if(sub.substring(index, index+1).matches(regex)){
-            return checkToken(sub, index+1, regex) + 1;
-        }
-
-        return 0;
-    }*/
 
 }
 

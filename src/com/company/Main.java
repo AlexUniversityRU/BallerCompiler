@@ -11,8 +11,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         System.out.println("Hello!");
-        String input = "v32ar = 3;\nb = 4 * (7-var);\nprint b;\nend";
-
+        String input1 = "vasr = 3;\nb = 4 * (7-var);\nprint b;\nend";
+        String input2 = "var = 3 + ;\n" +
+                "print var;\n" +
+                "end";
+        String input = "var = 3 ! ;\n" +
+                "print var;\n" +
+                "end";
         Compiler comp = new Compiler(input);
 
 
