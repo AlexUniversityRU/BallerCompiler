@@ -19,7 +19,7 @@ public class Lexer {
         int index = 0;
         int count = -1;
         ArrayList<Token> tokenlist = new ArrayList<Token>();
-        boolean ColonFound = false;
+        boolean SemiColonFound = false;
 
         // Comparisons
         String rINT = "\\b(^[1-9]+[0-9]*)";
@@ -30,7 +30,7 @@ public class Lexer {
 
 
         if(input.charAt(input.length()-1) == SEMICOL){
-            ColonFound = true;
+            SemiColonFound = true;
 
 
             input = input.substring(0, input.length()-1);
@@ -117,7 +117,7 @@ public class Lexer {
 
         } while(!FOUND);
 
-        if(ColonFound){
+        if(SemiColonFound){
             tokenlist.add(0, new Token(lexeme.substring(0, lexeme.length()-1), tokenCode));
             tokenlist.add(1, new Token(";", tokenCode.SEMICOL));
         } else {
