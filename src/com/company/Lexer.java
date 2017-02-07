@@ -1,4 +1,7 @@
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -7,11 +10,9 @@ public class Lexer {
 
     private Queue<Token> tokens = new LinkedList<Token>();
 
-    public Lexer(String input) {
-
-        this.splitInput(input);
-
-    }
+    public Lexer() {
+        this.nextToken();
+    };
 
     private void splitInput(String input) {
 
@@ -39,13 +40,9 @@ public class Lexer {
                 subString = "";
             }
         }
-
-
     }
 
     private void addToken(String subString) {
-
-        //System.out.println("Added token: " + subString);
 
         Token.TokenCode tokenCode;
 
@@ -80,28 +77,32 @@ public class Lexer {
         } else {
             tokenCode = Token.TokenCode.ERROR;
         }
-
-
         this.tokens.add(new Token(subString, tokenCode));
-
     }
 
 
-    public Token nextToken() {
+    public void nextToken() {
 
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String s;
+        String input = "";
 
-        Token temp = this.tokens.remove();
-        //System.out.println("Lex: " + temp.lexeme + ", tCode: " + temp.tCode);
-        return temp;
+        try {
+            while ((s = in.readLine()) != null && s.length() != 0) {
+                input += s;
 
+            }
+        } catch(IOException e) {
+            System.out.print(e.getStackTrace());
+        }
+
+        this.splitInput(input);
     }
 
     public Token getNextToken() {
-        Token temp = this.tokens.remove();
-        //System.out.println("Lex: " + temp.lexeme + ", tCode: " + temp.tCode);
-        return temp;
-
+        return this.tokens.remove();
     }
+
 }
 
 

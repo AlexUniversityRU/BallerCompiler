@@ -16,7 +16,7 @@ public class Main {
         String input3 = "a = 4;\n" +
                 "print a;\n" +
                 "end\n";
-        Compiler comp = new Compiler(input1);
+        //Compiler comp = new Compiler(input1);
 
 
 
