@@ -5,19 +5,94 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class Lexer {
 
-    // Plots ONE lexeme token, the caller sends each lexeme individually
-    public ArrayList<Token> nextToken(String input){
+    private final int START = 0;
+    private int ENDWORD = 0;
+    private final String rINT = "\\b(^[1-9]+[0-9]*)";
+    private final int CONTINUE = 1, FINISHED = 0, ERROR = 2;
+
+    public Lexer() throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String s;
+        String input = "";
+
+        while ((s = in.readLine()) != null && s.length() != 0) {
+            input = s;
+        }
+
+        ENDWORD = input.length()-1;
+        int ENDLOOP = input.length();
+        int OFFSET = 0;
+        for(int i=0; i<ENDLOOP; i++) {
+            switch(nextToken(input, i)){
+                case 0:
+                    // FINISHED
+                    String sToken = input.substring(OFFSET,i+1);
+                    TokenCode tc = identifyToken(sToken);
+                    Token token = new Token(sToken, tc);
+                    OFFSET = i;
+                    System.out.println("lexeme: "+ token.lexeme + " tCode: " + token.tCode);
+                    break;
+                default:
+                    // CONTINUE
+                    //System.out.println("Continuing");
+                    break;
+            }
+        }
+    }
+
+    private TokenCode identifyToken(String token){
+        if(token.matches(";")){
+            return TokenCode.SEMICOL;
+        }
+        if(token.matches(rINT)){
+            return TokenCode.INT;
+        }
+
+        else return TokenCode.ERROR;
+    }
+
+    private int nextToken(String input, int INDEX){
+        //System.out.println("INDEX: " + INDEX + " END: " + ENDWORD);
+        if(INDEX == ENDWORD){
+            //System.out.println("END");
+            return FINISHED;
+        }
+
+        if(input.substring(INDEX, INDEX+1).matches(rINT)){
+            //System.out.println("CONT");
+            return CONTINUE;
+        }
+
+
+        return FINISHED;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Plots lexeme tokens, the caller sends each connected string w/out spaces
+    public ArrayList<Token> Tokenizer(String input){
         String lexeme = input;
-        TokenCode tokenCode = TokenCode.ERROR; // Error if not found
-        int index = 0;
-        int count = -1;
+        TokenCode tokenCode = TokenCode.ERROR; // Error if not founn
         ArrayList<Token> tokenlist = new ArrayList<Token>();
         boolean SemiColonFound = false;
 
@@ -29,13 +104,11 @@ public class Lexer {
         char SEMICOL = ';';
 
 
+
         if(input.charAt(input.length()-1) == SEMICOL){
             SemiColonFound = true;
-
-
             input = input.substring(0, input.length()-1);
         }
-
 
         // For Default
         //  Nothing found, send entire input back with ERROR
@@ -127,19 +200,6 @@ public class Lexer {
     }
 
     /** OBSOLETE BELOW **/
-
-    // integer
-    /*if (input.substring(index, index + 1).matches(rNumber)) {
-        count = checkToken(input, 0, rNumber);
-        tokenCode = TokenCode.INT;
-     }*/
-    // variable
-     /*if (input.substring(index, index + 1).matches(rID)) {
-        count = checkToken(input, 0, rID);
-        tokenCode = TokenCode.ID;
-      }*/
-
-    // /while(index + count != input.length());
 
     // Recursively checks how many characters long the token is
     // Makes sure each index follows the regex

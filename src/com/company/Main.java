@@ -14,15 +14,19 @@ public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println("Hello!");
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        String s;
+        /*Lexer myLexer = new Lexer();
+        Parser myParser = new Parser(myLexer);
+        myParser.parse();*/
 
+        Lexer myLexer = new Lexer();
+
+        /////
+        /*BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String s;
         Lexer lexer = new Lexer();
         Queue<Token> tokenQ = new LinkedList<Token>();
-
-
         // Separates the input by spaces
-        // Checks each word if it is a lexeme
+        // Checks each word if it is a lexeme, or if it contains multiple lexemes
         // Places the lexeme into the queue (even if the lexeme is ERROR)
         while ((s = in.readLine()) != null && s.length() != 0) {
             String[] splitted = s.split("\\s+");
@@ -37,7 +41,7 @@ public class Main {
 
         for(Token t : tokenQ) {
             System.out.println("lexeme: " + t.lexeme + " tCode: " + t.tCode);
-        }
+        }*/
 
 
     }
