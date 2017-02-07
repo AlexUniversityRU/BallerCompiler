@@ -8,6 +8,8 @@ public class Token {
     public Token(String lexeme, TokenCode tCode){
         this.lexeme = lexeme;
         this.tCode = tCode;
+
+        System.out.println("Lexeme: " + lexeme + " , Code: " + tCode);
     }
 
 }

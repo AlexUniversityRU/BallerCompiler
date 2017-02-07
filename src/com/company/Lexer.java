@@ -14,9 +14,6 @@ import java.util.regex.Pattern;
 
 public class Lexer {
 
-    enum TokenCode { ID, ASSIGN, SEMICOL, INT, ADD, SUB,
-        MULT, LPAREN, RPAREN, PRINT, END, ERROR }
-
     private Queue<Token> tokens = new LinkedList<Token>();
 
     public Lexer(String input) {
@@ -60,12 +57,45 @@ public class Lexer {
 
         System.out.println("Added token: " + subString);
 
+        Token.TokenCode tokenCode;
+
+        if (subString.matches("[0-9]+")) {
+            tokenCode = Token.TokenCode.INT;
+        } else if (subString.matches("(\bprint)")) {
+            tokenCode = Token.TokenCode.PRINT;
+        } else if (subString.matches("(\bend)")) {
+            tokenCode = Token.TokenCode.END;
+        } else if (subString.matches("[A-Za-z]+")) {
+            tokenCode = Token.TokenCode.ID;
+        } else if (subString.length() == 1) {
+            if (subString == "*") {
+                tokenCode = Token.TokenCode.MULT;
+            } else if (subString.contentEquals("+")) {
+                tokenCode = Token.TokenCode.ADD;
+            } else if (subString.contentEquals("-")) {
+                tokenCode = Token.TokenCode.SUB;
+            } else if (subString.contentEquals("(")) {
+                tokenCode = Token.TokenCode.LPAREN;
+            } else if (subString.contentEquals(")")) {
+                tokenCode = Token.TokenCode.RPAREN;
+            } else if (subString.contentEquals(";")) {
+                tokenCode = Token.TokenCode.SEMICOL;
+            } else if (subString.contentEquals("=")) {
+                tokenCode = Token.TokenCode.ASSIGN;
+            } else {
+                tokenCode = Token.TokenCode.ERROR;
+            }
+        } else {
+            tokenCode = Token.TokenCode.ERROR;
+        }
 
 
-
-        //this.tokens.add(new Token(subString, tcode));
+        this.tokens.add(new Token(subString, tokenCode));
 
     }
+
+
+
     // Plots ONE lexeme token, the caller sends each lexeme individually
     public ArrayList<Token> nextToken(String input){
         ArrayList<Token> tokenlist = new ArrayList<Token>();
