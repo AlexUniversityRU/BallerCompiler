@@ -1,5 +1,3 @@
-package com.company;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,31 +11,12 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         System.out.println("Hello!");
+        String input = "v32ar = 3;\nb = 4 * (7-var);\nprint b;\nend";
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        String s;
-
-        Lexer lexer = new Lexer();
-        Queue<Token> tokenQ = new LinkedList<Token>();
+        Compiler comp = new Compiler(input);
 
 
-        // Separates the input by spaces
-        // Checks each word if it is a lexeme
-        // Places the lexeme into the queue (even if the lexeme is ERROR)
-        while ((s = in.readLine()) != null && s.length() != 0) {
-            String[] splitted = s.split("\\s+");
-            for (String part : splitted){
-                //tokenQ.add(lexer.nextToken(part));
-                ArrayList<Token> l = lexer.nextToken(part);
-                for(Token token : l){
-                    tokenQ.add(token);
-                }
-            }
-        }
 
-        for(Token t : tokenQ) {
-            System.out.println("lexeme: " + t.lexeme + " tCode: " + t.tCode);
-        }
 
 
     }

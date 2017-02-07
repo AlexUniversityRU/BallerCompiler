@@ -1,24 +1,80 @@
-package com.company;
+import com.sun.deploy.util.StringUtils;
 
 import javax.jws.soap.SOAPMessageHandlers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class Lexer {
 
+    enum TokenCode { ID, ASSIGN, SEMICOL, INT, ADD, SUB,
+        MULT, LPAREN, RPAREN, PRINT, END, ERROR }
+
+    private Queue<Token> tokens = new LinkedList<Token>();
+
+    public Lexer(String input) {
+
+        this.splitInput(input);
+
+    }
+
+    private void splitInput(String input) {
+
+        String[] splitted = input.split("\\s+");
+
+        for (String line : splitted) {
+            String subString = "";
+            boolean digitOrLetter = false;
+            for (int i = 0; i < line.length(); i++) {
+                char currentChar = line.charAt(i);
+                if (Character.isLetter(currentChar) || Character.isDigit(currentChar)) {
+                    subString += currentChar;
+                    digitOrLetter = true;
+                }  else {
+                    if (digitOrLetter) {
+                        digitOrLetter = false;
+                        addToken(subString);
+                        subString = "";
+                    }
+                    addToken((String.valueOf(currentChar)));
+                }
+            }
+            if (!subString.isEmpty()) {
+                addToken(subString);
+                subString = "";
+            }
+        }
+
+
+
+    }
+
+    private void addToken(String subString) {
+
+        System.out.println("Added token: " + subString);
+
+
+
+
+        //this.tokens.add(new Token(subString, tcode));
+
+    }
     // Plots ONE lexeme token, the caller sends each lexeme individually
     public ArrayList<Token> nextToken(String input){
-        String lexeme = input;
+        ArrayList<Token> tokenlist = new ArrayList<Token>();
+
+
+        /*String lexeme = input;
         TokenCode tokenCode = TokenCode.ERROR; // Error if not found
         int index = 0;
         int count = -1;
-        ArrayList<Token> tokenlist = new ArrayList<Token>();
         boolean SemiColonFound = false;
 
         // Comparisons
@@ -34,7 +90,7 @@ public class Lexer {
 
 
             input = input.substring(0, input.length()-1);
-        }
+        }*/
 
 
         // For Default
@@ -47,7 +103,7 @@ public class Lexer {
         // Search for end of word
         // Send word-1 through nextToken again
         // return set of tokens T = {word-1, end of word)
-        boolean FOUND = false;
+        /*boolean FOUND = false;
         int loop = 0;
         do{
             loop++;
@@ -122,7 +178,7 @@ public class Lexer {
             tokenlist.add(new Token(";", tokenCode.SEMICOL));
         } else {
             tokenlist.add(new Token(lexeme, tokenCode));
-        }
+        }*/
         return tokenlist;
     }
 
@@ -137,7 +193,7 @@ public class Lexer {
      /*if (input.substring(index, index + 1).matches(rID)) {
         count = checkToken(input, 0, rID);
         tokenCode = TokenCode.ID;
-      }*/
+      }
 
     // /while(index + count != input.length());
 
@@ -154,7 +210,7 @@ public class Lexer {
         }
 
         return 0;
-    }
+    }*/
 
 }
 
