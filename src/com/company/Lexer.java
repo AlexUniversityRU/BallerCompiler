@@ -55,7 +55,7 @@ public class Lexer {
 
     private void addToken(String subString) {
 
-        System.out.println("Added token: " + subString);
+        //System.out.println("Added token: " + subString);
 
         Token.TokenCode tokenCode;
 
@@ -82,7 +82,9 @@ public class Lexer {
                 tokenCode = Token.TokenCode.SEMICOL;
             } else if (subString.contentEquals("=")) {
                 tokenCode = Token.TokenCode.ASSIGN;
-            } else {
+            } else if (subString.contentEquals("*")) {
+                tokenCode = Token.TokenCode.MULT;
+            }else {
                 tokenCode = Token.TokenCode.ERROR;
             }
         } else {
@@ -97,7 +99,10 @@ public class Lexer {
 
     public Token nextToken(){
 
-        return this.tokens.remove();
+
+        Token temp =  this.tokens.remove();
+        System.out.println("Lex: " + temp.lexeme + ", tCode: " + temp.tCode);
+        return temp;
 
     }
 
